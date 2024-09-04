@@ -1,9 +1,12 @@
 #include<stdio.h>
+#include <stdlib.h>
+#include <conio.h>
 #define SIZE_R 21
 #define SIZE_C 77
 #define ITEM_TOTAL 263
 void update_screen(char maze[][SIZE_C + 1], int rows, int cols, int items)
 {
+	system("cls");
 	int i;
 	if (items)
 	{
