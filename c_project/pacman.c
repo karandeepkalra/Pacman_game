@@ -5,12 +5,43 @@
 #define SIZE_R 21
 #define SIZE_C 77
 #define ITEM_TOTAL 263
-typedef struct
+void moveghost(void (*func[])(position *, int *, int *, int *, char maze[SIZE_R][SIZE_C + 1]), position *ghost, int *deathf, int *changef, int *itemf, char maze[SIZE_R][SIZE_C + 1], position player, int items)
 {
-	int rows;
-	int cols;
-	int itemf;
-} position;
+	int temp = rand() % 10; // value from 0 to 9
+	*changef = 0;
+	if (ghost->cols - player.cols < 0)
+	{
+		ghost_add_col(ghost, changef, deathf, itemf, maze);
+	}
+	else if (ghost->cols - player.cols > 0)
+	{
+		ghost_min_col(ghost, changef, deathf, itemf, maze);
+	}
+	if ((ghost->rows - player.rows) < 0)
+	{
+		ghost_add_row(ghost, changef, deathf, itemf, maze);
+	}
+	else if ((ghost->rows - player.rows) > 0)
+	{
+		ghost_min_row(ghost, changef, deathf, itemf, maze);
+	}
+	if (!*changef)
+	{
+		func[0](ghost, changef, deathf, itemf, maze);
+		func[1](ghost, changef, deathf, itemf, maze);
+		func[2](ghost, changef, deathf, itemf, maze);
+		func[3](ghost, changef, deathf, itemf, maze);
+	}
+}
+void update_ghosts2(position *ghost, int count, int *deathf, int *print_f, char maze[SIZE_R][SIZE_C + 1], position player, int items)
+{
+	void (*func[])(position *, int *, int *, int *, char maze[SIZE_R][SIZE_C + 1]) = {ghost_add_col, ghost_add_row, ghost_min_row, ghost_min_col};
+	if ((*deathf == 0) && (*print_f == 0))
+	{
+		int changef = 0;
+		moveghost(func, ghost, deathf, &changef, &ghost->itemf, maze, player, items);
+	}
+}
 int main()
 {
 	printf("WELCOME TO PACMAN!\n");
